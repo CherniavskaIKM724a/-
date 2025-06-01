@@ -1,0 +1,89 @@
+#include <iostream>
+#include <list>
+#include <windows.h>
+
+using namespace std;
+
+template <typename T>
+class Queue {
+private:
+    list<T> data; // внутреннее хранилище элементов
+
+public:
+    // Добавляет элемент в конец очереди
+    void enqueue(T item) {
+        data.push_back(item);
+    }
+
+    // Удаляет и возвращает элемент из начала очереди
+    T dequeue() {
+        if (empty()) {
+            throw out_of_range("Очередь пуста");
+        }
+        T frontItem = data.front();
+        data.pop_front();
+        return frontItem;
+    }
+
+    // Возвращает первый элемент очереди без удаления
+    T front() const {
+        if (empty()) {
+            throw out_of_range("Очередь пуста");
+        }
+        return data.front();
+    }
+
+    // Проверяет, пуста ли очередь
+    bool empty() const {
+        return data.empty();
+    }
+};
+
+int main() {
+    SetConsoleCP(1251);            // +кириллица
+    SetConsoleOutputCP(1251);
+    // Пример 1: Очередь целых чисел
+    Queue<int> intQueue;
+    intQueue.enqueue(10);
+    intQueue.enqueue(20);
+    intQueue.enqueue(30);
+
+    cout << "Очередь целых чисел:" << endl;
+    while (!intQueue.empty()) {
+        cout << intQueue.dequeue() << " "; // Выведет: 10 20 30
+    }
+    cout << endl << endl;
+
+    // Пример 2: Очередь строк
+    Queue<string> stringQueue;
+    stringQueue.enqueue("Первый");
+    stringQueue.enqueue("Второй");
+    stringQueue.enqueue("Третий");
+
+    cout << "Очередь строк:" << endl;
+    while (!stringQueue.empty()) {
+        cout << stringQueue.dequeue() << " "; // Выведет: Первый Второй Третий
+    }
+    cout << endl << endl;
+
+    // Пример 3: Использование front() для просмотра первого элемента
+    Queue<char> charQueue;
+    charQueue.enqueue('A');
+    charQueue.enqueue('B');
+    charQueue.enqueue('C');
+
+    cout << "Первый элемент в очереди символов: " << charQueue.front() << endl; // Выведет: A
+    charQueue.dequeue(); // Удаляем 'A'
+    cout << "Теперь первый элемент: " << charQueue.front() << endl; // Выведет: B
+
+    // Пример 4: Проверка на пустоту очереди
+    Queue<double> doubleQueue;
+    if (doubleQueue.empty()) {
+        cout << endl << "Очередь double пуста!" << endl;
+    }
+    doubleQueue.enqueue(3.14);
+    doubleQueue.enqueue(2.71);
+    cout << "Первый элемент в очереди double: " << doubleQueue.front() << endl; // Выведет: 3.14
+
+    return 0;
+}
